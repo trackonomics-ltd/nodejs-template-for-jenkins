@@ -1,20 +1,27 @@
 pipeline {
-  agent { docker { image 'node:12' } }
-
+  agent any
+    
+  tools {nodejs "node"}
+    
   stages {
-    stage('Cloning Git') {
+        
+    stage('Git') {
       steps {
-          withCredentials([string(credentialsId: 'jenkins-asdutoit-github', variable: 'token')]) {
-           git url: 'https://github.com/trackonomics-ltd/nodejs-template-for-jenkins', credentialsId: token, changelog: true, poll: true, branch: 'change_build_env'
-        }
+        git 'https://github.com/trackonomics-ltd/nodejs-template-for-jenkins'
       }
     }
-    
-    stage('Install Packages') {
+     
+    stage('Build') {
       steps {
-        sh 'npm install -g serverless@2.60.0'
         sh 'npm install'
       }
     }  
+    
+            
+    stage('Test') {
+      steps {
+        sh 'node test'
+      }
+    }
   }
 }
