@@ -1,6 +1,5 @@
 pipeline {
   agent { docker { image 'node:12' } }
-  tools {nodejs "node12"}
 
   stages {
     stage('Cloning Git') {
